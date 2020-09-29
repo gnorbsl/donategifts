@@ -1,13 +1,13 @@
 /*
  * Author: Stacy Sealky Lee
  * FileName: app.js
- * FileDescription: 
- * The set up codes are in an order, 
+ * FileDescription:
+ * The set up codes are in an order,
  * so some functions won't work if you switch the order of what gets loaded in app.js first.
- * 
+ *
  */
 
-//EXPRESS SET UP 
+//EXPRESS SET UP
 const express = require('express');
 const app = express();
 
@@ -76,7 +76,7 @@ app.use(session({
 	saveUninitialized: false,
 	secret: process.env.SESS_SECRET,
 	cookie: {
-		maxAge: Number(process.env.SESS_LIFE), // cookie set to expire in 1 hour 
+		maxAge: Number(process.env.SESS_LIFE), // cookie set to expire in 1 hour
 		sameSite: true,
 		secure: process.env.NODE_ENV === 'production'
 	}
@@ -84,9 +84,7 @@ app.use(session({
 
 // MIDDLEWARE for extracting userId from a session
 app.use(async (req, res, next) => {
-	const {
-		userId
-	} = req.session;
+	const {userId} = req.session;
 	if (userId) {
 		const result = await User.findById(userId);
 		res.locals.user = result;
@@ -106,11 +104,14 @@ app.use(cookieParser());
 const usersRoute = require('./routes/users');
 const wishCardsRoute = require('./routes/wishCards');
 const aboutRoute = require('./routes/about');
+const agencyRoute = require('./routes/agency');
+
 
 //MOUNT ROUTERS
 app.use('/users', usersRoute);
 app.use('/wishcards', wishCardsRoute);
 app.use('/about', aboutRoute);
+app.use('/agency', agencyRoute);
 
 app.get('/', (req, res) => {
 	res.render('home', {

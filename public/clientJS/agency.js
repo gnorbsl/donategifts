@@ -9,7 +9,7 @@ $(document).ready(function () {
 
     $.ajax({
       type: "POST",
-      url: "/users/agency",
+      url: "/agency",
       data: {
         agencyName,
         agencyWebsite,

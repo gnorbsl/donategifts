@@ -11,7 +11,7 @@ const router = express.Router();
 const Contact = require('../models/Contact');
 
 //LOAD EMAIL SENDING FUNCTION
-const sendMail = require('../controllers/email');
+const sendMail = require('../helper/email');
 
 // @desc    Render about.html
 // @route   GET '/about'
