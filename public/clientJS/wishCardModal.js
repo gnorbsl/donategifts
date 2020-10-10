@@ -1,7 +1,7 @@
 // im not sure if this is the cleanest way to append dynamic data to modal
 // when modal is called, check what button called it and extract info like url and child name from it
 $('#wishCardDonateModal').on('show.bs.modal', function (event) {
-    // get reference to button that opened the modal 
+    // get reference to button that opened the modal
     let button = $(event.relatedTarget);
     // extract values from button that contain child name / amazonlink
     let amazonUrl = button[0].dataset.valueUrl;
@@ -18,4 +18,30 @@ $('#wishCardDonateModal').on('show.bs.modal', function (event) {
     // set  redirect on a ref element
     let donationRedirect = document.getElementById("redirectAmazonUrl");
     donationRedirect.href = amazonUrl;
+
+    $('#blabtn').on('click', (lockWishCard(button[0].dataset.valueId)));
+
+
 });
+
+
+
+function lockWishCard(id) {
+
+    $.ajax({
+        type: "POST",
+        url:  "/wishcards/lock",
+        data: {
+            id,
+        },
+        success: function(response, textStatus, xhr) {
+
+            console.log(response)
+
+        },
+        error: function(response, textStatus, errorThrown) {
+           console.log(response)
+
+        }
+    });
+}

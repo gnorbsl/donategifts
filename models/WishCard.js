@@ -45,6 +45,9 @@ var WishCardSchema = new Schema(
     deliveryDate: {
       type: Date,
     },
+      lockedUntil: {
+          type: Date,
+      },
     occasion: {
       type: String,
     },
