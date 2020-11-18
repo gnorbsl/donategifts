@@ -550,7 +550,7 @@ router.get('/status/:id', async (req, res) => {
   }
 });
 let testResponse = false;
-let scrapeJobDuration =[]
+const scrapeJobDuration =[]
 queue.process(async (job, done) => {
   const { wishCardId, userId, url, price } = job.data;
 
