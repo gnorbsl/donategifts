@@ -9,12 +9,7 @@ serving all wishcard related routes
 const express = require('express');
 const Bull = require('bull');
 
-const queue = new Bull('queue', {
-  limiter: {
-    max: 1,
-    duration: process.env.LOCAL_DEVELOPMENT === 'true' ? 1000 : 30000,
-  },
-});
+const queue = new Bull('queue', {});
 
 const router = express.Router();
 const moment = require('moment');
@@ -555,11 +550,13 @@ router.get('/status/:id', async (req, res) => {
   }
 });
 let testResponse = false;
-
+let scrapeJobDuration =[]
 queue.process(async (job, done) => {
   const { wishCardId, userId, url, price } = job.data;
 
   try {
+    scrapeJobDuration[wishCardId] = new Date().getTime()
+
     let isDonated = true;
     const wishListArray = /registryID\.1=(.*?)&.*?registryItemID.1=(.*?)&/gm.exec(url);
     if (wishListArray) {
@@ -630,7 +627,6 @@ queue.process(async (job, done) => {
 
         log.info('Wishcard not donated', { type: 'wishcard_not_donated', wishCardId, userId });
         io.emit('not_donated', { id: wishCardId, userId });
-
         done(false);
         return true;
       }
@@ -643,13 +639,13 @@ queue.process(async (job, done) => {
     done(false);
   }
 });
-
 queue.on('completed', (job) => {
   log.info('Scrapejob done', {
     type: 'scrapejob_done',
     userId: job.data.userId,
     wishCardId: job.data.wishCardId,
     url: job.data.url,
+    duration: (new Date().getTime()-scrapeJobDuration[job.data.wishCardId])/1000
   });
 });
 // @desc   Gets default wishcard options for guided wishcard creation

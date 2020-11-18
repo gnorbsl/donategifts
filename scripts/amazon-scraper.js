@@ -8,7 +8,7 @@ const scrapeList = async (url) => {
     api_key: process.env.SCRAPINGBEE_APIKEY,
     url,
     render_js: 'false',
-    premium_proxy: 'true',
+    premium_proxy: 'false',
     country_code: 'us',
   });
 
@@ -34,8 +34,8 @@ const scrapeList = async (url) => {
     }
     return false;
   }
-
   return results;
+
 };
 
 module.exports = scrapeList;
