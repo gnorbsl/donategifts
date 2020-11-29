@@ -72,7 +72,7 @@ router.post('/webhook', bodyParser.raw({ type: 'application/json' }), async (req
             lastName: user.lName,
             childName: wishCard.childFirstName,
             item: wishCard.wishItemName,
-            price: wishCard.wishItemPrice,
+            price: event.data.object.amount/100,
             agency: event.data.object.metadata.agencyName,
           });
 
