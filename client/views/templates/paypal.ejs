@@ -10,6 +10,9 @@
     createOrder: function(data, actions) {
       console.log('order' + totalAmount)
       return actions.order.create({
+        application_context: {
+          shipping_preference: 'NO_SHIPPING'
+        },
         purchase_units: [{
           reference_id: `${userId}%${wishCardId}%${userDonation}%${agencyName}`,
           amount: {
@@ -20,7 +23,7 @@
     },
     onApprove: function(data, actions) {
       return actions.order.capture().then(function(details) {
-       // redirectAfterSuccessfullPayment();
+        redirectAfterSuccessfullPayment();
       });
     },
     onClick: function () {
