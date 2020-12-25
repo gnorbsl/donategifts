@@ -466,17 +466,20 @@ router.get('/get/random', async (req, res) => {
     console.log(wishcards.length)
     if (!wishcards || wishcards.length < 6) {
 
-      const donatedWishCards = await WishCardRepository.getViewableWishCards(true);
+      const donatedWishCards = await WishCardRepository.getWishCardsByStatus('donated');
       wishcards = wishcards.concat(donatedWishCards.slice(0, 6 - wishcards.length))
-    }
-
-    wishcards.sort(() => Math.random() - 0.5);
-    const requiredLength = 3 * Math.ceil(wishcards.length / 3);
-    const rem = requiredLength - wishcards.length;
-    if (rem !== 0 && wishcards.length > 3) {
-      for (let j = 0; j < rem; j++) {
-        wishcards.push(wishcards[j]);
+    } else {
+      
+      wishcards.sort(() => Math.random() - 0.5);
+      const requiredLength = 3 * Math.ceil(wishcards.length / 3);
+      const rem = requiredLength - wishcards.length;
+      if (rem !== 0 && wishcards.length > 3) {
+        for (let j = 0; j < rem; j++) {
+          wishcards.push(wishcards[j]);
+        }
       }
+
+
     }
     res.render('templates/homeSampleCards', { wishcards }, (error, html) => {
       if (error) {
